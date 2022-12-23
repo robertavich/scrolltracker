@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracker</title>
+    <style>
+        html,body{
+            margin:0;
+            height:100%;
+            width: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .nav{
+            height:50px;
+            display: flex;
+            align-items: center;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        }
+        .container{
+            display: flex;
+            width: 100%;
+            height:calc(100% - 50px);
+        }
+        .drawer{
+            width:300px;
+            margin-left:20px;
+            margin-right:20px;
+        }
+        .slide-content{
+            flex:1;
+            background-color: hotpink;
+            overflow-y: auto;
+        }
+        section{
+            height:100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        section:first-child{
+            background-color:greenyellow
+        }
+        section:nth-child(2){
+            background-color: rgb(80, 133, 255);
+        }
+        section:nth-child(3){
+            background-color:mediumpurple;
+        }
+        section:nth-child(4){
+            background-color: rgb(255, 80, 179);
+        }
+        section:nth-child(5){
+            background-color:peru;
+        }
+        section:nth-child(6){
+            background-color:rgb(247, 61, 61);
+        }
+        h1{
+            font-size:30px;
+        }
+        h2{
+            margin-left:20px;
+        }
+        .drawer-top{
+            margin-top:20px;
+            height:100px;
+            background-color:rgba(0, 0, 0, 0.05);
+        }
+        .drawer-tracker-wrap{
+            margin-top:50px;
+            background-color:rgba(0, 0, 0, 0.05);
+        }
+        .tracker-item{
+            padding: 15px;
+        }
+        .tracker-item p{
+            font-weight: 600;
+            margin:0;
+            margin-left:20px;
+            color: rgba(0, 0, 0, 0.75);
+        }
+        .activeTracker{
+            background-color: rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <h2>Component Development App</h2>
+    </nav>
+    <div class="container">
+        <div class="drawer">
+            <div class="drawer-top"></div>
+            <div class="drawer-tracker-wrap">
+                <div class="tracker-item banana" onclick="scrollToSection(this)"><p>Banana</p></div>
+                <div class="tracker-item mango" onclick="scrollToSection(this)"><p>Mango</p></div>
+                <div class="tracker-item orange" onclick="scrollToSection(this)"><p>Orange</p></div>
+                <div class="tracker-item pear" onclick="scrollToSection(this)"><p>Pear</p></div>
+                <div class="tracker-item guava" onclick="scrollToSection(this)"><p>Guava</p></div>
+                <div class="tracker-item cherry" onclick="scrollToSection(this)"><p>Cherry</p></div>
+            </div>
+        </div>
+        <div class="slide-content" id="slide-content">
+            <section id="banana"><h1>BANANA</h1></section>
+            <section id="mango"><h1>MANGO</h1></section>
+            <section id="orange"><h1>ORANGE</h1></section>
+            <section id="pear"><h1>PEAR</h1></section>
+            <section id="guava"><h1>GUAVA</h1></section>
+            <section id="cherry"><h1>CHERRY</h1></section>
+        </div>
+    </div>
+    <script>
+         function scrollToSection(element){
+            const menuId = element.className.split(" ")[1];
+            const sectionId = menuId;
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth',block: 'nearest' });
+        }
+
+
+        ab();
+        function ab(){
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    var trackerItemId = (entry.target).id;
+                    if(entry.isIntersecting){     
+                        removePreviousActive()
+                        document.getElementsByClassName(trackerItemId)[0].classList.add("activeTracker");
+                    }else{
+                        document.getElementsByClassName(trackerItemId)[0].classList.remove("activeTracker");
+                    }
+
+                })
+            }, { threshold:0.5});
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => observer.observe(section));
+        }
+
+        function removePreviousActive(){
+            var actives = document.querySelectorAll('.activeTracker');
+            actives.forEach(active => (active.classList.remove("activeTracker")) );
+        }
+
+    </script>
+</body>
+</html>
